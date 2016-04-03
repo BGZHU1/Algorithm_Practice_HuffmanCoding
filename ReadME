@@ -1,0 +1,115 @@
+Due date:  March. 30th, 2016
+Algorithm steps:
+******************************************
+Step 1: prepare the skeleton of the program
+Step 2: Construct Huffman ordered linked list // see below
+Step 3: Construct Huffman binary tree // see below
+Step 4: Construct Huffman char-code pairs // see below
+Step 5: preorder traverse Huffman binary tree // see below
+********************************
+ Data structure:
+********************************
+  - A  listBinTreeNode  class
+
+       friend HuffmanLinkedList class
+       
+- chStr (string)
+- prob (int)
+- next (listBinTreeNode *)
+- left (listBinTreeNode *)
+- right (listBinTreeNode *)
+
+	Methods:
+-  constructor(s)
+- destructor
+- printNode 
+// given a node, T, print T’s chStr, T’s prob, T’s next’s chStr, T’s left’s chStr, T ‘s right’s chStr 
+
+
+
+  - A HuffmanLinkedList  class
+- listHead (listBinTreeNode *)
+- oldListHead (listBinTreeNode *)
+
+Method:
+- constructor(s)  // create a dummy listNode and let listHead points to it.
+- listInsert (newNode)  // inserting newNode into the list using inserting sort
+- findSpot (data)
+- isEmpty
+- printList // print the list from listHead to the end to the outFile3 (argv[4]) in the following format:
+listHead -->(“dummy”, 0, nextString)-->(nextString, prob, next)
+-->(nextString, prob, nextString)--> ...... --> (nextString, prob, NULL)--> NULL
+
+- A HuffmanBinaryTree class
+	-  charInfo class or struct
+		- chStr (string)
+		- prob (int)
+		- code (string)
+	- Root (listBinTreeNode *)
+
+    	-  Method:
+		- preOrderTraveral
+		- constructor(s)
+		- constructCharCode
+		- destructore
+		
+******************************************
+******************************************
+Step 2:  Construct Huffman ordered linked list, by the prob, and in ascending order
+******************************************
+Step 2.0:  open inFile and all outfiles
+Step 2.1: listHead  create a dummy node for listHead to point to
+step 2.2:  read chStr prob from inFile
+step 2.3:  spot  findSpot(prob)
+step 2.4:  newNode  make a new node
+ listInsert(newNode) 	
+step 2.5: printList to outFile3 // argv[4]
+step 2.6: repeat step 2.2 to step 2.5 while inFile is NOT empty
+step 2.7: close inFile
+
+
+******************************************
+Step 3: Construct Huffman binary tree 
+******************************************
+ 3.0: oldListHead  create a dummy node and let oldListHead points to the dummy node
+	oldListHead.next listHead.next
+
+ 3.1: newNode  create a listBinTreeNode
+        newNode’s prob  the sum of prob of the first and second node of the list // first is the node after dummy
+        newNode’s chStr  concatenate chStr of the first node and chStr of the second node in the list
+        newNode’s left  the first node of the list
+	newNode’s right  the second node of the list
+         listHead  the third node of the list
+
+3.2:  - printNode (newNode) to outFile3 // argv[4]
+	- listInsert (newNode)  
+	- printList to outFile3 // argv[4]
+
+3.3: repeat step 3.1 – 3.2 while the list is NOT empty
+3.4: Root  newNode
+
+******************************************
+Step 4: Construct Huffman char-code pairs in recursion
+******************************************
+   void constructCharCode (T, code)
+ 
+ if (T is null)
+    		return
+else  if  T is a leaf
+	   	   output T’s chStr  to outfile1 // argv[2]
+ 	   output code to outfile1 
+	else 
+	      constructCharCode (T->left, code + “0”)
+	      constructCharCode (T->right, code + “1”)
+
+******************************************
+Step 5: Preorder traversal of the Huffman Binary tree, starts at Root 
+******************************************
+preOrder (T)
+
+ if (T is null)
+    		return
+	else 
+	      printNode (T)  to outfile2 // argv[3]
+	      preOrder (T->left)
+    	      preOrder (T->right)
